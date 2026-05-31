@@ -37,8 +37,46 @@ d3.csv("data/car_clean.csv").then(data => {
 
 
 function updateSummary(data) {
-    console.log("summary");
+
+    const totalCars = data.length;
+
+    const avgPrice =
+        d3.mean(data, d => d.Price);
+
+    const avgMileage =
+        d3.mean(data, d => d.Mileage);
+
+    // Cari brand dengan rata-rata harga tertinggi
+    const brandAvg =
+        d3.rollups(
+            data,
+            v => d3.mean(v, d => d.Price),
+            d => d.Brand
+        );
+
+    brandAvg.sort((a, b) => b[1] - a[1]);
+
+    const topBrand = brandAvg[0][0];
+
+    d3.select("#totalCars")
+        .text(totalCars.toLocaleString());
+
+    d3.select("#avgPrice")
+        .text(
+            "$" +
+            Math.round(avgPrice).toLocaleString()
+        );
+
+    d3.select("#avgMileage")
+        .text(
+            Math.round(avgMileage).toLocaleString() +
+            " km"
+        );
+
+    d3.select("#topBrand")
+        .text(topBrand);
 }
+
 
 
 // grafik 1-3
