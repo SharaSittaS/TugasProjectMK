@@ -1,18 +1,144 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>D3 Project UAS</title>
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>    
-    <!-- Add HTML content, SVG drawing area, ... -->
-    
+
+<body>
+
+     <!-- HEADER -->
+    <header>
+        <h1>Car Price Analysis Dashboard</h1>
+        <p>
+            Interactive Visualization of Factors Affecting Car Prices
+        </p>
+    </header>
+
+
+    <!-- SUMMARY -->
+    <section class="summary">
+
+        <div class="card">
+            <h3>Total Cars</h3>
+            <p id="totalCars">-</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Price</h3>
+            <p id="avgPrice">-</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Mileage</h3>
+            <p id="avgMileage">-</p>
+        </div>
+
+        <div class="card">
+            <h3>Average HP</h3>
+            <p id="avgHP">-</p>
+        </div>
+
+    </section>
+
+    <!-- SECTION 1 -->
+    <section class="dashboard-section">
+
+        <h2>Market Overview</h2>
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
+                <h3>Car Distribution by Brand</h3>
+                <div id="chart1"></div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Average Price by Brand</h3>
+                <div id="chart2"></div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Model Year vs Price</h3>
+                <div id="chart3"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="dashboard-section">
+
+        <h2>Price Analysis</h2>
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
+                <h3>Mileage vs Price</h3>
+                <div id="chart4"></div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Horsepower vs Price</h3>
+                <div id="chart5"></div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Fuel Type in High Price Segment</h3>
+                <div id="chart6"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="dashboard-section">
+
+        <h2>Advanced Insights</h2>
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
+                <h3>Transmission vs Price</h3>
+                <div id="chart7"></div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Year vs Mileage</h3>
+                <div id="chart8"></div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3>Correlation Heatmap</h3>
+                <div id="chart9"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- INSIGHT -->
+    <section class="insight-section">
+
+        <h2>Key Findings</h2>
+
+        <ul>
+            <li>Insight 1...</li>
+            <li>Insight 2...</li>
+            <li>Insight 3...</li>
+        </ul>
+
+    </section>
     <!-- D3 bundle -->
     <script src="js/d3.v6.min.js"></script>
 
     <!-- Our JS code -->
     <script src="js/main.js"></script>
 </body>
+
 </html>
