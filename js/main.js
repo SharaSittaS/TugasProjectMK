@@ -85,9 +85,14 @@ function drawChart4(data) {
         .attr("cx", d => x(d.Mileage))
         .attr("cy", d => y(d.Price))
         .attr("r", 3)
+        .attr("fill", "black")
         .attr("opacity", 0.6)
 
         .on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr("fill", "orange")
+                .attr("r", 4);
 
             tooltip
                 .style("visibility", "visible")
@@ -108,6 +113,10 @@ function drawChart4(data) {
         })
 
         .on("mouseout", function () {
+
+            d3.select(this)
+                .attr("fill", "black")
+                .attr("r", 3);
 
             tooltip
                 .style("visibility", "hidden");
@@ -150,9 +159,14 @@ function drawChart5(data) {
         .attr("cx", d => x(d.Horsepower))
         .attr("cy", d => y(d.Price))
         .attr("r", 3)
+        .attr("fill", "black")
         .attr("opacity", 0.6)
 
         .on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr("fill", "orange")
+                .attr("r", 4);
 
             tooltip
                 .style("visibility", "visible")
@@ -172,6 +186,10 @@ function drawChart5(data) {
         })
 
         .on("mouseout", function () {
+
+            d3.select(this)
+                .attr("fill", "black")
+                .attr("r", 3);
 
             tooltip
                 .style("visibility", "hidden");
