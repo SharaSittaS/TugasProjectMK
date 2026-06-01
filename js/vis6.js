@@ -98,13 +98,11 @@ function initBarChart(data) {
         .enter()
         .append("rect")
         .attr("x", d => xScale(d[0]))
-        .attr("y", d => yScale(d[1]))
+        .attr("y", innerH)      // mulai dari bawah
+        .attr("height", 0)      // tinggi awal 0
         .attr("rx", 5)
         .attr("width", xScale.bandwidth())
-        .attr(
-            "height",
-            d => innerH - yScale(d[1])
-        )
+
         .attr("fill", "#4f8ef7")
 
         .on("mouseover", function (event, d) {
@@ -146,6 +144,13 @@ function initBarChart(data) {
                 .classed("show", false);
 
         });
+    
+        .transition()
+        .duration(600)
+        .delay((d, i) => i * 120)
+        .ease(d3.easeCubicOut)
+        .attr("y", d => yScale(d[1]))
+        .attr("height", d => innerH - yScale(d[1]));
 
 }
 
