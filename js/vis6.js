@@ -143,7 +143,7 @@ function initBarChart(data) {
             tooltip
                 .classed("show", false);
 
-        });
+        })
     
         .transition()
         .duration(600)
