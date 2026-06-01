@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visualisasi 3 — Korelasi Tahun Produksi terhadap Harga Jual</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="css/viz3.css" />
 </head>
+
 <body>
 
   <div class="header">
     <div class="badge">Visualisasi 3 &nbsp;·&nbsp; Scatter Plot</div>
     <h1>Korelasi Tahun Produksi<br>terhadap Harga Jual</h1>
-    <p class="subtitle">Eksplorasi hubungan sebaran tahun pembuatan dan nilai transaksi untuk 2.000 unit kendaraan bekas.</p>
+    <p class="subtitle">Eksplorasi hubungan sebaran tahun pembuatan dan nilai transaksi untuk 2.000 unit kendaraan
+      bekas.</p>
   </div>
 
   <div class="chart-wrap">
+    <div class="filter-box">
+      <label>Filter Brand:</label>
+
+      <select id="brandFilter">
+        <option value="all">
+          Tampilkan Semua
+        </option>
+
+        <option value="BMW">BMW</option>
+        <option value="Ford">Ford</option>
+        <option value="Honda">Honda</option>
+        <option value="Hyundai">Hyundai</option>
+        <option value="Tesla">Tesla</option>
+        <option value="Toyota">Toyota</option>
+      </select>
+    </div>
     <svg id="chart">
-      <text id="chart-loader" x="50%" y="50%" text-anchor="middle" fill="var(--muted)">Memuat 2.000 data kendaraan bekas...</text>
+      <text id="chart-loader" x="50%" y="50%" text-anchor="middle" fill="var(--muted)">Memuat 2.000 data kendaraan
+        bekas...</text>
     </svg>
     <div class="legend" id="legend"></div>
   </div>
@@ -39,12 +61,21 @@
   </div>
 
   <p class="note">
-    <strong>Temuan Analisis:</strong> Berdasarkan sebaran 2.000 titik data kendaraan bekas, terlihat **tidak adanya korelasi positif yang linier kuat antara tahun produksi (Model Year) dengan harga jual (Price)**. Sebaran harga dari tahun 2005 hingga 2023 terdistribusi cukup merata di kisaran <strong>$20,000 s.d $70,000</strong> tanpa ada kecenderungan kemiringan ke atas. Hal ini membuktikan bahwa tahun pembuatan yang lebih baru bukanlah faktor tunggal penentu tingginya harga transaksi, melainkan faktor spesifikasi teknis dan kondisi fisik lainnya memegang peranan yang sangat signifikan.<br><br>
-    <strong>Petunjuk Interaksi:</strong> Arahkan kursor pada titik lingkaran untuk melihat info detail kendaraan. <strong>Klik pada nama brand di legenda</strong> di bawah chart untuk menyaring titik dan fokus hanya pada satu brand tertentu. Klik item legenda yang sama sekali lagi untuk memulihkan semua data.<br><br>
-    <strong>Sumber data:</strong> Car Price Prediction Dataset · Diolah dengan Python/pandas · Divisualisasikan dengan D3.js
+    <strong>Temuan Analisis:</strong> Berdasarkan sebaran 2.000 titik data kendaraan bekas, terlihat **tidak adanya
+    korelasi positif yang linier kuat antara tahun produksi (Model Year) dengan harga jual (Price)**. Sebaran harga dari
+    tahun 2005 hingga 2023 terdistribusi cukup merata di kisaran <strong>$20,000 s.d $70,000</strong> tanpa ada
+    kecenderungan kemiringan ke atas. Hal ini membuktikan bahwa tahun pembuatan yang lebih baru bukanlah faktor tunggal
+    penentu tingginya harga transaksi, melainkan faktor spesifikasi teknis dan kondisi fisik lainnya memegang peranan
+    yang sangat signifikan.<br><br>
+    <strong>Petunjuk Interaksi:</strong> Arahkan kursor pada titik lingkaran untuk melihat info detail kendaraan.
+    <strong>Klik pada nama brand di legenda</strong> di bawah chart untuk menyaring titik dan fokus hanya pada satu
+    brand tertentu. Klik item legenda yang sama sekali lagi untuk memulihkan semua data.<br><br>
+    <strong>Sumber data:</strong> Car Price Prediction Dataset · Diolah dengan Python/pandas · Divisualisasikan dengan
+    D3.js
   </p>
 
   <!-- <script src="js/viz3_data.js"></script> -->
   <script src="js/viz3.js"></script>
 </body>
+
 </html>

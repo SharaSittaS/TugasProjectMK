@@ -1,4 +1,4 @@
-// ── COLOR ─────────────────────────────────────────────
+// ───────────────── COLOR ─────────────────
 const COLOR_HEX = {
   BMW: "#4f8ef7",
   Ford: "#f7754f",
@@ -8,15 +8,24 @@ const COLOR_HEX = {
   Toyota: "#f0c040",
 };
 
-const DOT_NEUTRAL = "#6f83b5";
+// ───────────────── SIZE ─────────────────
+const margin = {
+  top: 30,
+  right: 30,
+  bottom: 60,
+  left: 70
+};
 
-// ── DIMENSI ───────────────────────────────────────────
-const margin = { top: 20, right: 30, bottom: 52, left: 62 };
-const W = 708;
-const H = 380;
-const innerW = W - margin.left - margin.right;
-const innerH = H - margin.top - margin.bottom;
+const W = 1200;
+const H = 650;
 
+const innerW =
+  W - margin.left - margin.right;
+
+const innerH =
+  H - margin.top - margin.bottom;
+
+// ───────────────── SVG ─────────────────
 const svg = d3.select("#chart")
   .attr("width", W)
   .attr("height", H)
@@ -25,11 +34,14 @@ const svg = d3.select("#chart")
   .style("height", "auto");
 
 const g = svg.append("g")
-  .attr("transform", `translate(${margin.left},${margin.top})`);
+  .attr(
+    "transform",
+    `translate(${margin.left},${margin.top})`
+  );
 
-// ── LOAD CSV ──────────────────────────────────────────
+// ───────────────── LOAD CSV ─────────────────
 d3.csv("data/car_clean.csv")
-  .then(function(data){
+  .then(function (data) {
 
     data.forEach(d => {
       d.Model_Year = +d.Model_Year;
@@ -42,227 +54,274 @@ d3.csv("data/car_clean.csv")
     initScatterPlot(data);
 
   })
-  .catch(function(error){
-    console.error("CSV gagal:", error);
+  .catch(function (error) {
+    console.error(error);
   });
 
-// ── SCATTER PLOT ──────────────────────────────────────
-function initScatterPlot(data){
+// ───────────────── MAIN ─────────────────
+function initScatterPlot(data) {
 
   d3.select("#chart-loader").remove();
 
+  // ───── FILTER DROPDOWN ─────
+  const brandFilter =
+    document.getElementById("brandFilter");
+
+  // ───── SCALE ─────
   const xScale = d3.scaleLinear()
-    .domain([2004.4, 2023.6])
+    .domain([
+      d3.min(data, d => d.Model_Year) - 0.5,
+      d3.max(data, d => d.Model_Year) + 0.5
+    ])
     .range([0, innerW]);
 
-  const yMax = d3.max(data, d => d.Price);
-
   const yScale = d3.scaleLinear()
-    .domain([0, yMax * 1.05])
+    .domain([
+      0,
+      d3.max(data, d => d.Price) * 1.05
+    ])
     .range([innerH, 0]);
 
-  // GRID
+  // ───── GRID ─────
   g.append("g")
     .attr("class", "grid")
     .call(
       d3.axisLeft(yScale)
+        .ticks(6)
         .tickSize(-innerW)
         .tickFormat("")
-        .ticks(6)
     );
 
   g.append("g")
     .attr("class", "grid")
-    .attr("transform", `translate(0,${innerH})`)
+    .attr(
+      "transform",
+      `translate(0,${innerH})`
+    )
     .call(
       d3.axisBottom(xScale)
         .tickSize(-innerH)
         .tickFormat("")
-        .tickValues(d3.range(2005,2024,2))
     );
 
-  // AXIS
-  g.append("g")
-    .attr("class","axis")
+  // ───── X AXIS ─────
+  const xAxis = g.append("g")
+    .attr("class", "axis")
     .attr("transform", `translate(0,${innerH})`)
     .call(
       d3.axisBottom(xScale)
-        .tickValues(d3.range(2005,2024,2))
         .tickFormat(d3.format("d"))
-        .tickSize(0)
     );
 
-  g.append("g")
-    .attr("class","axis")
+  xAxis.selectAll("text")
+    .attr("fill", "#ffffff")
+    .style("font-size", "14px");
+
+  xAxis.selectAll("line,path")
+    .attr("stroke", "#ffffff");
+
+  // ───── Y AXIS ─────
+  const yAxis = g.append("g")
+    .attr("class", "axis")
     .call(
       d3.axisLeft(yScale)
         .ticks(6)
-        .tickSize(0)
-        .tickFormat(d => "$" + (d/1000) + "k")
+        .tickFormat(d => "$" + (d / 1000) + "k")
     );
 
-  // TOOLTIP
-  const tt = document.getElementById("tooltip");
-  const ttBrand = document.getElementById("tt-brand");
-  const ttPrice = document.getElementById("tt-price");
-  const ttYear = document.getElementById("tt-year");
-  const ttMileage = document.getElementById("tt-mileage");
-  const ttEngine = document.getElementById("tt-engine");
-  const ttHp = document.getElementById("tt-hp");
+  yAxis.selectAll("text")
+    .attr("fill", "#ffffff")
+    .style("font-size", "14px");
 
-  let activeBrand = null;
+  yAxis.selectAll("line,path")
+    .attr("stroke", "#ffffff");
 
-  // ── DOTS ─────────────────────────────
-const dots = g.selectAll(".dot")
-  .data(data)
-  .join("circle")
+  // ───── AXIS LABEL ─────
+  g.append("text")
+    .attr("x", innerW / 2)
+    .attr("y", innerH + 55)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#ffffff")
+    .style("font-size", "20px")     // diperbesar
+    .style("font-weight", "700")
+    .text("Model Year");
+
+  g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -innerH / 2)
+    .attr("y", -60)
+    .attr("text-anchor", "middle")
+    .attr("fill", "#ffffff")
+    .style("font-size", "20px")
+    .style("font-weight", "700")
+    .text("Price (USD)");
+  // ───── TOOLTIP ─────
+  const tt =
+    document.getElementById("tooltip");
+
+  const ttBrand =
+    document.getElementById("tt-brand");
+
+  const ttPrice =
+    document.getElementById("tt-price");
+
+  const ttYear =
+    document.getElementById("tt-year");
+
+  const ttMileage =
+    document.getElementById("tt-mileage");
+
+  const ttEngine =
+    document.getElementById("tt-engine");
+
+  const ttHp =
+    document.getElementById("tt-hp");
+
+  // ───── DOTS ─────
+  const dots = g.selectAll(".dot")
+    .data(data)
+    .join("circle")
     .attr("class", "dot")
 
-    // jitter ringan biar tidak jadi garis vertikal
-    .attr("cx", d =>
-      xScale(d.Model_Year) +
-      (Math.random() - 0.5) * 5
+    // jitter
+    .attr(
+      "cx",
+      d =>
+        xScale(d.Model_Year)
+        +
+        (Math.random() - 0.5) * 5
     )
 
-    .attr("cy", d => yScale(d.Price))
+    .attr(
+      "cy",
+      d =>
+        yScale(d.Price)
+    )
 
-    // ukuran sedang
     .attr("r", 0)
 
-    // langsung warna brand
-    .attr("fill", d => COLOR_HEX[d.Brand])
+    .attr(
+      "fill",
+      d =>
+        COLOR_HEX[d.Brand]
+    )
 
-    // cukup terlihat tapi tidak penuh
-    .attr("opacity", 0.45)
+    .attr(
+      "opacity",
+      0.45
+    )
 
-    // border tipis supaya titik tidak nyatu
-    .attr("stroke", "rgba(255,255,255,0.15)")
-    .attr("stroke-width", 0.7);
+    .attr(
+      "stroke",
+      "rgba(255,255,255,0.2)"
+    )
 
-dots.transition()
-  .duration(700)
-  .attr("r", 3.8);
+    .attr(
+      "stroke-width",
+      0.7
+    );
 
-  // ── HOVER ────────────────────────────
+  dots.transition()
+    .duration(700)
+    .attr("r", 3.8);
+
+  // ───── HOVER ─────
   dots
-    .on("mousemove", function(event,d){
+    .on("mousemove", function (event, d) {
 
       d3.select(this)
         .raise()
-        .attr("r",7)
-        .attr("opacity",1)
-        .attr("fill", COLOR_HEX[d.Brand])
-        .attr("stroke","#fff")
-        .attr("stroke-width","2px");
+        .attr("r", 8)
+        .attr("opacity", 1)
+        .attr(
+          "stroke",
+          "#fff"
+        )
+        .attr(
+          "stroke-width",
+          2
+        );
 
-      ttBrand.textContent = d.Brand;
-      ttBrand.style.color = COLOR_HEX[d.Brand];
-      ttPrice.textContent = "$" + d.Price.toLocaleString();
-      ttYear.textContent = d.Model_Year;
+      ttBrand.textContent =
+        d.Brand;
+
+      ttBrand.style.color =
+        COLOR_HEX[d.Brand];
+
+      ttPrice.textContent =
+        "$" +
+        d.Price.toLocaleString();
+
+      ttYear.textContent =
+        d.Model_Year;
+
       ttMileage.textContent =
-        d.Mileage.toLocaleString() + " km";
+        d.Mileage.toLocaleString()
+        + " km";
+
       ttEngine.textContent =
-        d.Engine_Size.toFixed(1) + " L";
+        d.Engine_Size.toFixed(1)
+        + " L";
+
       ttHp.textContent =
-        d.Horsepower + " HP";
+        d.Horsepower
+        + " HP";
 
       tt.classList.add("show");
+
       tt.style.left =
-        (event.clientX + 16) + "px";
+        (event.clientX + 15)
+        + "px";
+
       tt.style.top =
-        (event.clientY - 80) + "px";
+        (event.clientY - 70)
+        + "px";
     })
 
-    .on("mouseleave", function(event,d){
+    .on("mouseleave", function () {
 
-      if(activeBrand===null){
-
-        d3.select(this)
-          .attr("r",2.5)
-          .attr("fill",DOT_NEUTRAL)
-          .attr("opacity",0.20)
-          .attr("stroke","none");
-
-      } else if(d.Brand===activeBrand){
-
-        d3.select(this)
-          .attr("r",4)
-          .attr("fill",COLOR_HEX[d.Brand])
-          .attr("opacity",0.85);
-
-      } else {
-
-        d3.select(this)
-          .attr("r",2)
-          .attr("fill",DOT_NEUTRAL)
-          .attr("opacity",0.05);
-      }
+      d3.select(this)
+        .attr("r", 3.8)
+        .attr("opacity", 0.45)
+        .attr(
+          "stroke-width",
+          0.7
+        );
 
       tt.classList.remove("show");
     });
 
-  // ── LEGEND FILTER ────────────────────
-  const brands = [
-    "Honda",
-    "Toyota",
-    "BMW",
-    "Ford",
-    "Tesla",
-    "Hyundai"
-  ];
+  // ───── FILTER BRAND ─────
+  brandFilter
+    .addEventListener(
+      "change",
+      function () {
 
-  const legend =
-    document.getElementById("legend");
+        const selected =
+          this.value;
 
-  brands.forEach(br => {
+        if (
+          selected === "all"
+        ) {
 
-    const item =
-      document.createElement("div");
+          dots.transition()
+            .duration(400)
+            .attr(
+              "display",
+              "block"
+            );
 
-    item.className =
-      "legend-item";
+        } else {
 
-    item.innerHTML = `
-      <span class="legend-dot"
-      style="background:${COLOR_HEX[br]}"></span>
-      <span>${br}</span>
-    `;
-
-    item.addEventListener("click",()=>{
-
-      if(activeBrand===br){
-
-        activeBrand = null;
-
-        dots.transition()
-          .duration(300)
-          .attr("r",2.5)
-          .attr("fill",DOT_NEUTRAL)
-          .attr("opacity",0.20);
-
-      } else {
-
-        activeBrand = br;
-
-        dots.transition()
-          .duration(300)
-          .attr("r",
-            d => d.Brand===br ? 4 : 2
-          )
-          .attr("fill",
-            d => d.Brand===br
-              ? COLOR_HEX[d.Brand]
-              : DOT_NEUTRAL
-          )
-          .attr("opacity",
-            d => d.Brand===br
-              ? 0.85
-              : 0.04
-          );
-      }
-    });
-
-    legend.appendChild(item);
-  });
-
+          dots.transition()
+            .duration(400)
+            .attr(
+              "display",
+              d =>
+                d.Brand === selected
+                  ? "block"
+                  : "none"
+            );
+        }
+      });
 }
