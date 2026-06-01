@@ -89,13 +89,13 @@ function initScatterPlot(data) {
     const tooltip =
         d3.select("#tooltip");
 
-    g.selectAll("circle")
+        const dots = g.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
         .attr("cx", d => xScale(d.Horsepower))
         .attr("cy", d => yScale(d.Price))
-        .attr("r", 4)
+        .attr("r", 0) // mulai dari 0
         .attr("fill", d => COLOR_HEX[d.Brand])
         .attr("opacity", 0.6)
 
@@ -140,6 +140,12 @@ function initScatterPlot(data) {
                 .classed("show", false);
 
         });
+
+    dots.transition()
+        .duration(300)
+        .delay((d, i) => i * 2)
+        .ease(d3.easeBackOut)
+        .attr("r", 3)
 
     const legend = d3.select("#legend");
 
