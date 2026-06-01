@@ -161,9 +161,10 @@ svg { display: block; overflow: visible; }
 .note strong { color: var(--text); }
 
 .nav-buttons {
-  display: flex;
+  display: grid;
   gap: 16px;
   margin-top: 24px;
+  grid-template-columns: repeat(3, 1fr);
 }
 .btn {
   text-decoration: none;
