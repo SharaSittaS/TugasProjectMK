@@ -33,7 +33,8 @@ function initBarChart(data) {
             v => v.length,
             d => d.Fuel_Type
         );
-
+         .sort((a, b) => b[1] - a[1]); 
+    
     const xScale = d3.scaleBand()
         .domain(fuelCounts.map(d => d[0]))
         .range([0, innerW])
