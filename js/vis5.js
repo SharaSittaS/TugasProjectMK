@@ -85,11 +85,40 @@ function initScatterPlot(data) {
         .attr("fill", "white")
         .text("Price (USD)");
 
+    //REGRESI LINEAR (TREND LINE)
+    const n = data.length;
+    const sumX = d3.sum(data, d => d.Horsepower);
+    const sumY = d3.sum(data, d => d.Price);
+    const sumXY = d3.sum(data, d => d.Horsepower * d.Price);
+    const sumX2 = d3.sum(data, d => d.Horsepower * d.Horsepower);
+
+    // Menghitung Slope (m) dan Intercept (c) -> y = mx + c
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    // Titik awal (x1, y1) di nilai Horsepower terendah dan akhir (x2, y2) di teratas
+    const x1 = d3.min(data, d => d.Horsepower);
+    const y1 = slope * x1 + intercept;
+    const x2 = d3.max(data, d => d.Horsepower);
+    const y2 = slope * x2 + intercept;
+
+    // tambah ke dalam SVG 
+    g.append("line")
+        .attr("class", "trend-line")
+        .attr("x1", xScale(x1))
+        .attr("y1", yScale(y1))
+        .attr("x2", xScale(x2))
+        .attr("y2", yScale(y2))
+        .attr("stroke", "#ffffff")       // Warna garis putih 
+        .attr("stroke-width", 2.5)      
+        .attr("stroke-dasharray", "5,5") //garis putus-putus 
+        .attr("opacity", 0.8);         
+
     // Tooltip
     const tooltip =
         d3.select("#tooltip");
 
-        const dots = g.selectAll("circle")
+    const dots = g.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
