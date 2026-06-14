@@ -85,9 +85,37 @@ function initScatterPlot(data) {
         .attr("fill", "white")
         .text("Price (USD)");
 
+    //REGRESI LINEAR (TREND LINE)
+    const n = data.length;
+    const sumX = d3.sum(data, d => d.Mileage);
+    const sumY = d3.sum(data, d => d.Price);
+    const sumXY = d3.sum(data, d => d.Mileage * d.Price);
+    const sumX2 = d3.sum(data, d => d.Mileage * d.Mileage);
+
+    // Rumus mencari Slope (m) dan Intercept (c)
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    //titik awal (x1, y1) dan akhir (x2, y2) untuk garis tren
+    const x1 = 0;
+    const y1 = slope * x1 + intercept;
+    const x2 = d3.max(data, d => d.Mileage);
+    const y2 = slope * x2 + intercept;
+
+    // Tambah ke SVG
+    g.append("line")
+        .attr("class", "trend-line")
+        .attr("x1", xScale(x1))
+        .attr("y1", yScale(y1))
+        .attr("x2", xScale(x2))
+        .attr("y2", yScale(y2))
+        .attr("stroke", "#ffffff") // Warna garis putih
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4") // garis putus-putus
+        .attr("opacity", 0.8);
+
     // Tooltip
-    const tooltip =
-        d3.select("#tooltip");
+    const tooltip = d3.select("#tooltip");
 
     const dots = g.selectAll("circle")
         .data(data)
