@@ -44,6 +44,7 @@ d3.csv("data/car_clean.csv")
   .then(function (data) {
 
     data.forEach(d => {
+      d.Car_ID = +d.Car_ID;
       d.Model_Year = +d.Model_Year;
       d.Price = +d.Price;
       d.Mileage = +d.Mileage;
@@ -51,7 +52,9 @@ d3.csv("data/car_clean.csv")
       d.Horsepower = +d.Horsepower;
     });
 
-    initScatterPlot(data);
+    const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
+
+    initScatterPlot(cleanData);
 
   })
   .catch(function (error) {
@@ -177,6 +180,33 @@ function initScatterPlot(data) {
   const ttHp =
     document.getElementById("tt-hp");
 
+  // ───── REGRESI LINEAR (TREND LINE) ─────
+  const nReg = data.length;
+  const sumX = d3.sum(data, d => d.Model_Year);
+  const sumY = d3.sum(data, d => d.Price);
+  const sumXY = d3.sum(data, d => d.Model_Year * d.Price);
+  const sumX2 = d3.sum(data, d => d.Model_Year * d.Model_Year);
+
+  const slope = (nReg * sumXY - sumX * sumY) / (nReg * sumX2 - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / nReg;
+
+  const x1 = d3.min(data, d => d.Model_Year);
+  const y1 = slope * x1 + intercept;
+  const x2 = d3.max(data, d => d.Model_Year);
+  const y2 = slope * x2 + intercept;
+
+  g.append("line")
+    .attr("class", "trend-line")
+    .attr("x1", xScale(x1))
+    .attr("y1", yScale(y1))
+    .attr("x2", xScale(x2))
+    .attr("y2", yScale(y2))
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 2.5)
+    .attr("stroke-dasharray", "5,5")
+    .attr("opacity", 0.8)
+    .style("pointer-events", "none");
+
   // ───── DOTS ─────
   const dots = g.selectAll(".dot")
     .data(data)
@@ -208,7 +238,7 @@ function initScatterPlot(data) {
 
     .attr(
       "opacity",
-      0.45
+      0.35
     )
 
     .attr(
@@ -223,7 +253,7 @@ function initScatterPlot(data) {
 
   dots.transition()
     .duration(700)
-    .attr("r", 3.8);
+    .attr("r", 2.2);
 
   // ───── HOVER ─────
   dots
@@ -231,7 +261,7 @@ function initScatterPlot(data) {
 
       d3.select(this)
         .raise()
-        .attr("r", 8)
+        .attr("r", 7)
         .attr("opacity", 1)
         .attr(
           "stroke",
@@ -239,7 +269,7 @@ function initScatterPlot(data) {
         )
         .attr(
           "stroke-width",
-          2
+          1.5
         );
 
       ttBrand.textContent =
@@ -281,8 +311,8 @@ function initScatterPlot(data) {
     .on("mouseleave", function () {
 
       d3.select(this)
-        .attr("r", 3.8)
-        .attr("opacity", 0.45)
+        .attr("r", 2.2)
+        .attr("opacity", 0.35)
         .attr(
           "stroke-width",
           0.7

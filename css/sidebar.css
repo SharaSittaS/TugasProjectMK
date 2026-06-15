@@ -1,0 +1,223 @@
+/* Shared Sidebar Layout */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+    background: var(--bg, #0f1117) !important;
+    display: block !important;
+}
+
+.dashboard-container {
+    display: flex !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.sidebar {
+    width: 280px !important;
+    height: 100vh !important;
+    background: var(--surface, #181c27) !important;
+    border-right: 1px solid var(--border, #252a38) !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    z-index: 1000 !important;
+}
+
+.sidebar-brand {
+    margin-bottom: 24px;
+}
+
+.sidebar-brand h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--text, #e8eaf0);
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-item {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted, #7a8099);
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid transparent;
+}
+
+.nav-item:hover {
+    color: var(--accent, #f0c040);
+    background: rgba(240, 192, 64, 0.05);
+    border-color: rgba(240, 192, 64, 0.2);
+}
+
+.nav-item.active {
+    color: var(--text, #e8eaf0);
+    background: var(--border, #252a38);
+    border-color: var(--muted, #7a8099);
+    border-left: 4px solid var(--accent, #f0c040);
+}
+
+.main-content {
+    flex-grow: 1 !important;
+    height: 100vh !important;
+    overflow-y: auto !important; /* Main content scrolls independently (e.g., on index.html) */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 32px 40px !important;
+    box-sizing: border-box !important;
+    max-width: calc(100% - 280px) !important;
+}
+
+/* --- Layout Optimization for Subpages (pages with .chart-wrap) on Desktop --- */
+@media (min-width: 993px) {
+    body:has(.chart-wrap) {
+        overflow: hidden !important;
+    }
+
+    body:has(.chart-wrap) .main-content {
+        overflow: hidden !important; /* Force no scroll on subpages */
+        display: grid !important;
+        grid-template-areas: 
+            "header header"
+            "chart insight";
+        grid-template-columns: 1.75fr 1fr !important;
+        grid-template-rows: auto 1fr !important;
+        gap: 24px !important;
+        padding: 24px 40px !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+    }
+
+    body:has(.chart-wrap) .header {
+        grid-area: header !important;
+        margin-bottom: 0 !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    body:has(.chart-wrap) .header h1 {
+        font-size: 26px !important;
+        margin-bottom: 4px !important;
+        line-height: 1.2 !important;
+    }
+
+    body:has(.chart-wrap) .header .subtitle {
+        font-size: 13.5px !important;
+        margin-bottom: 0 !important;
+    }
+
+    body:has(.chart-wrap) .chart-wrap {
+        grid-area: chart !important;
+        height: 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 24px 30px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 0 !important;
+        box-sizing: border-box !important;
+        min-height: 0 !important;
+    }
+
+    body:has(.chart-wrap) svg#chart {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 420px !important; 
+        min-height: 200px !important;
+        display: block !important;
+    }
+
+    /* Specific constraint for taller SVGs to prevent overflow */
+    body:has(.chart-wrap) svg#chart[viewBox*="1200"],
+    body:has(.chart-wrap) svg#chart[viewBox*="760"],
+    body:has(.chart-wrap) svg#chart[viewBox*="700"] {
+        max-height: 385px !important;
+    }
+
+    body:has(.chart-wrap) .legend {
+        margin-top: 12px !important;
+        gap: 6px 16px !important;
+    }
+
+    body:has(.chart-wrap) .note {
+        grid-area: insight !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        background: var(--surface, #181c27) !important;
+        border: 1px solid var(--border, #252a38) !important;
+        border-radius: 12px !important;
+        padding: 24px !important;
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        color: var(--muted, #7a8099) !important;
+        text-align: left !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        box-sizing: border-box !important;
+        height: 100% !important;
+        overflow-y: auto !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    body:has(.chart-wrap) .note strong {
+        color: var(--text, #e8eaf0) !important;
+        font-size: 13.5px !important;
+        margin-bottom: 8px !important;
+        margin-top: 12px !important;
+        display: block !important;
+        border-left: 3px solid var(--accent, #f0c040) !important;
+        padding-left: 8px !important;
+    }
+
+    body:has(.chart-wrap) .note strong:first-child {
+        margin-top: 0 !important;
+    }
+}
+
+/* Mobile & Tablet Layout Adjustments */
+@media (max-width: 992px) {
+    body {
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+    .dashboard-container {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+    }
+    .main-content {
+        max-width: 100% !important;
+        height: auto !important;
+        overflow-y: auto !important;
+        padding: 24px !important;
+    }
+}

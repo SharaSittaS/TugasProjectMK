@@ -35,11 +35,14 @@ d3.csv("data/car_clean.csv")
 .then(data=>{
 
   data.forEach(d=>{
+    d.Car_ID = +d.Car_ID;
     d.Price = +d.Price;
   });
 
+  const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
+
   const grouped = d3.group(
-    data,
+    cleanData,
     d=>d.Transmission
   );
 

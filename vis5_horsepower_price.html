@@ -9,25 +9,72 @@
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/vis4.css" />
 </head>
 
 <body>
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="badge">UAS Visualisasi Data</div>
+                <h2>Car Price Dashboard</h2>
+                <p class="subtitle">Analisis Interaktif Harga Mobil Bekas</p>
+            </div>
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item">
+          <span class="icon">🚗</span> 01. Distribusi Brand
+        </a>
+        <a href="viz2_average_price.html" class="nav-item">
+          <span class="icon">💰</span> 02. Rata-rata Harga
+        </a>
+        <a href="viz3_scatter_plot.html" class="nav-item">
+          <span class="icon">📅</span> 03. Tahun vs Harga
+        </a>
+        <a href="vis4_mileage_price.html" class="nav-item">
+          <span class="icon">🛣️</span> 04. Jarak vs Harga
+        </a>
+        <a href="vis5_horsepower_price.html" class="nav-item active">
+          <span class="icon">⚡</span> 05. Tenaga vs Harga
+        </a>
+        <a href="vis6_fueltype_highprice.html" class="nav-item">
+          <span class="icon">⛽</span> 06. Bahan Bakar Termahal
+        </a>
+        <a href="viz7.html" class="nav-item">
+          <span class="icon">⚙️</span> 07. Transmisi vs Harga
+        </a>
+        <a href="viz8.html" class="nav-item">
+          <span class="icon">📈</span> 08. Tahun vs Jarak Tempuh
+        </a>
+        <a href="viz9.html" class="nav-item">
+          <span class="icon">🔥</span> 09. Matriks Korelasi
+        </a>
+      </nav>
+        </aside>
 
-    <div class="header">
-        <div class="badge">Visualisasi 5 &nbsp;·&nbsp; Scatter Plot</div>
-        <h1>Korelasi Horsepower<br>terhadap Harga Jual</h1>
-        <p class="subtitle">
-            Eksplorasi hubungan antara Horsepower terhadap Harga Jual.
-        </p>
-    </div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="header">
+                <div class="badge">Visualisasi 5 &nbsp;·&nbsp; Scatter Plot</div>
+                <h1>Korelasi Horsepower<br>terhadap Harga Jual</h1>
+                <p class="subtitle">
+                    Eksplorasi hubungan antara Horsepower terhadap Harga Jual (setelah pembersihan outlier).
+                </p>
+            </div>
 
-    <div class="chart-wrap">
-        <svg id="chart">
-            <text id="chart-loader" x="50%" y="50%" text-anchor="middle" fill="var(--muted)">Memuat 2.000 data kendaraan
-            </text>
-        </svg>
-        <div class="legend" id="legend"></div>
+            <div class="chart-wrap">
+                <svg id="chart">
+                    <text id="chart-loader" x="50%" y="50%" text-anchor="middle" fill="var(--muted)">Memuat data...</text>
+                </svg>
+                <div class="legend" id="legend"></div>
+            </div>
+
+            <p class="note">
+                <strong>Temuan Analisis:</strong> Tenaga kuda (Horsepower) adalah penentu harga terkuat dengan korelasi positif yang signifikan (+0.64). Semakin tinggi HP kendaraan, harga jualnya cenderung meningkat secara linier di pasar bekas.<br><br>
+                <strong>Sumber:</strong> Car Price Prediction Dataset (Kaggle) · D3.js v7
+            </p>
+        </div>
     </div>
 
     <div class="tooltip" id="tooltip">
@@ -36,30 +83,6 @@
         <div class="tt-row"><span>Horsepower</span><span id="tt-hp"></span></div>
         <div class="tt-row"><span>Tahun</span><span id="tt-year"></span></div>
     </div>
-
-    <div class="nav-buttons">
-        <a href="viz1_brand_count.html" class="btn">Visualisasi 1: Jumlah Kendaraan</a>
-        <a href="viz2_average_price.html" class="btn">Visualisasi 2: Rata-rata Harga</a>
-        <a href="viz3_scatter_plot.html" class="btn">Visualisasi 3: Sebaran Korelasi</a>
-        <a href="vis4_mileage_price.html" class="btn">Visualisasi 4: Sebaran Korelasi</a>
-        <a href="vis5_horsepower_price.html" class="btn active">Visualisasi 5: Horsepower vs Harga</a>
-        <a href="vis6_fueltype_highprice.html" class="btn">Visualisasi 6: Fuel Type Harga Tinggi</a>
-        <a href="viz7.html" class="btn">Visualisasi 7: Distribusi Harga</a>
-        <a href="viz8.html" class="btn">Visualisasi 8: Tahun vs Mileage</a>
-        <a href="viz9.html" class="btn">Visualisasi 9: Heatmap Korelasi</a>
-
-    </div>
-
-    <p class="note">
-        <strong>Temuan Analisis:</strong> Scatter plot menunjukkan adanya korelasi positif antara horsepower dan harga
-        jual kendaraan. Semakin tinggi horsepower, semakin tinggi pula harga jual yang cenderung terbentuk. Pola sebaran
-        titik yang meningkat dari kiri bawah ke kanan atas menunjukkan bahwa horsepower merupakan salah satu faktor yang
-        cukup berpengaruh terhadap harga kendaraan, dengan pola yang relatif serupa pada semua merek.<br><br>
-        <strong>Petunjuk Interaksi:</strong> Arahkan kursor pada titik lingkaran untuk melihat info detail
-        kendaraan.<br>
-        <strong>Sumber data:</strong> Car Price Prediction Dataset · Diolah dengan Python/pandas · Divisualisasikan
-        dengan D3.js
-    </p>
 
     <script src="js/vis5.js"></script>
 </body>

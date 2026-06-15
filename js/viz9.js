@@ -71,20 +71,14 @@ d3.csv("data/car_clean.csv")
 .then(data=>{
 
   data.forEach(d=>{
-
-    d.Model_Year =
-      +d.Model_Year;
-
-    d.Mileage =
-      +d.Mileage;
-
-    d.Horsepower =
-      +d.Horsepower;
-
-    d.Price =
-      +d.Price;
-
+    d.Car_ID = +d.Car_ID;
+    d.Model_Year = +d.Model_Year;
+    d.Mileage = +d.Mileage;
+    d.Horsepower = +d.Horsepower;
+    d.Price = +d.Price;
   });
+
+  const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
 
   const matrix = [];
 
@@ -94,8 +88,8 @@ d3.csv("data/car_clean.csv")
 
       const corr =
         correlation(
-          data.map(d=>d[v1]),
-          data.map(d=>d[v2])
+          cleanData.map(d=>d[v1]),
+          cleanData.map(d=>d[v2])
         );
 
       matrix.push({

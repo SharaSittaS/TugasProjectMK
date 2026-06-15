@@ -32,8 +32,7 @@ function initBarChart(data) {
             highCars,
             v => v.length,
             d => d.Fuel_Type
-        );
-         .sort((a, b) => b[1] - a[1]); 
+        ).sort((a, b) => b[1] - a[1]);
     
     const xScale = d3.scaleBand()
         .domain(fuelCounts.map(d => d[0]))
@@ -156,7 +155,13 @@ function initBarChart(data) {
 }
 
 d3.csv("data/car_clean.csv").then(data => {
+    data.forEach(d => {
+        d.Car_ID = +d.Car_ID;
+        d.Price = +d.Price;
+    });
 
-    initBarChart(data);
+    const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
+
+    initBarChart(cleanData);
 
 });

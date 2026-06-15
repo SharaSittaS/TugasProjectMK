@@ -39,21 +39,23 @@ d3.csv("data/car_clean.csv")
 .then(data=>{
 
   data.forEach(d=>{
-
+    d.Car_ID = +d.Car_ID;
+    d.Price = +d.Price;
     d.Model_Year = +d.Model_Year;
     d.Mileage = +d.Mileage;
-
   });
 
+  const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
+
   const x = d3.scaleLinear()
-    .domain(d3.extent(data,d=>d.Model_Year))
+    .domain(d3.extent(cleanData,d=>d.Model_Year))
     .nice()
     .range([0,innerW]);
 
   const y = d3.scaleLinear()
     .domain([
       0,
-      d3.max(data,d=>d.Mileage)
+      d3.max(cleanData,d=>d.Mileage)
     ])
     .nice()
     .range([innerH,0]);
@@ -72,19 +74,19 @@ d3.csv("data/car_clean.csv")
       "transform",
       `translate(0,${innerH})`
     )
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
   g.append("g")
     .attr("class","axis")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).tickFormat(d => (d / 1000) + "k km"));
 
   const dots = g.selectAll(".dot")
-    .data(data)
+    .data(cleanData)
     .join("circle")
     .attr("class","dot")
     .attr(
       "cx",
-      d=>x(d.Model_Year)
+      d=>x(d.Model_Year) + (Math.random() - 0.5) * 5
     )
     .attr(
       "cy",
@@ -95,14 +97,20 @@ d3.csv("data/car_clean.csv")
       "fill",
       d=>COLOR[d.Brand]
     )
-    .attr("opacity",0.75);
+    .attr("opacity",0.35);
 
   dots.transition()
     .duration(800)
     .delay((d,i)=>i*2)
-    .attr("r",4);
+    .attr("r",2.2);
 
   dots.on("mousemove",(event,d)=>{
+    d3.select(event.currentTarget)
+      .raise()
+      .attr("r", 7)
+      .attr("opacity", 1)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.5);
 
     document.getElementById("tt-brand")
       .textContent=d.Brand;
@@ -112,7 +120,7 @@ d3.csv("data/car_clean.csv")
 
     document.getElementById("tt-mileage")
       .textContent=
-      d.Mileage.toLocaleString("id-ID");
+      d.Mileage.toLocaleString("id-ID") + " km";
 
     tooltip.classList.add("show");
 
@@ -124,7 +132,11 @@ d3.csv("data/car_clean.csv")
 
   });
 
-  dots.on("mouseleave",()=>{
+  dots.on("mouseleave",function(event, d){
+    d3.select(this)
+      .attr("r", 2.2)
+      .attr("opacity", 0.35)
+      .attr("stroke", "none");
 
     tooltip.classList.remove("show");
 

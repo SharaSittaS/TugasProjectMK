@@ -1,143 +1,81 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
-    <title>D3 Project UAS</title>
-    <meta charset="UTF-8">
-    <link rel="icon" href="data:;base64,iVBORwOKGO=" />
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualisasi 1 — Persebaran Jumlah Mobil per Brand</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/viz1.css" />
 </head>
-
 <body>
+  <div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="badge">UAS Visualisasi Data</div>
+        <h2>Car Price Dashboard</h2>
+        <p class="subtitle">Analisis Interaktif Harga Mobil Bekas</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item active">
+          <span class="icon">🚗</span> 01. Distribusi Brand
+        </a>
+        <a href="viz2_average_price.html" class="nav-item">
+          <span class="icon">💰</span> 02. Rata-rata Harga
+        </a>
+        <a href="viz3_scatter_plot.html" class="nav-item">
+          <span class="icon">📅</span> 03. Tahun vs Harga
+        </a>
+        <a href="vis4_mileage_price.html" class="nav-item">
+          <span class="icon">🛣️</span> 04. Jarak vs Harga
+        </a>
+        <a href="vis5_horsepower_price.html" class="nav-item">
+          <span class="icon">⚡</span> 05. Tenaga vs Harga
+        </a>
+        <a href="vis6_fueltype_highprice.html" class="nav-item">
+          <span class="icon">⛽</span> 06. Bahan Bakar Termahal
+        </a>
+        <a href="viz7.html" class="nav-item">
+          <span class="icon">⚙️</span> 07. Transmisi vs Harga
+        </a>
+        <a href="viz8.html" class="nav-item">
+          <span class="icon">📈</span> 08. Tahun vs Jarak Tempuh
+        </a>
+        <a href="viz9.html" class="nav-item">
+          <span class="icon">🔥</span> 09. Matriks Korelasi
+        </a>
+      </nav>
+    </aside>
 
-     <!-- HEADER -->
-    <header>
-        <h1>Car Price Analysis Dashboard</h1>
-        <p>
-            Interactive Visualization of Factors Affecting Car Prices
-        </p>
-    </header>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="header">
+        <div class="badge">Visualisasi 1 &nbsp;·&nbsp; Bar Chart</div>
+        <h1>Persebaran Jumlah Mobil<br>Berdasarkan Brand</h1>
+        <p class="subtitle">Distribusi 1.998 entri kendaraan bekas terhadap enam merek — Toyota, Hyundai, Tesla, Honda, Ford, dan BMW (setelah pembersihan outlier).</p>
+      </div>
 
+      <div class="chart-wrap">
+        <svg id="chart"></svg>
+        <div class="legend" id="legend"></div>
+      </div>
 
-     <!-- SUMMARY -->
-    <section class="summary">
+      <p class="note">
+        <strong>Temuan Analisis:</strong> Distribusi kendaraan bekas hampir seragam (~330 unit per brand), menunjukkan dataset menggunakan metode stratified sampling (penyeimbangan data). Hal ini sangat ideal untuk melatih model machine learning karena menghindari bias merek.<br><br>
+        <strong>Sumber:</strong> Car Price Prediction Dataset (Kaggle) · D3.js v7
+      </p>
+    </div>
+  </div>
 
-        <div class="card">
-            <h3>Total Cars</h3>
-            <p id="totalCars">-</p>
-        </div>
+  <div class="tooltip" id="tooltip">
+    <div class="tt-brand" id="tt-brand"></div>
+    <div class="tt-row"><span>Jumlah Kendaraan</span><span id="tt-count"></span></div>
+    <div class="tt-row"><span>Proporsi Dataset</span><span id="tt-pct"></span></div>
+    <div class="tt-row"><span>Peringkat</span><span id="tt-rank"></span></div>
+  </div>
 
-        <div class="card">
-            <h3>Average Price</h3>
-            <p id="avgPrice">-</p>
-        </div>
-
-        <div class="card">
-            <h3>Average Mileage</h3>
-            <p id="avgMileage">-</p>
-        </div>
-
-        <div class="card">
-            <h3>Most Expensive Brand</h3>
-            <p id="topBrand">-</p>
-        </div>
-    </section>
-
-    <!-- SECTION 1 -->
-    <section class="dashboard-section">
-
-        <h2>Market Overview</h2>
-
-        <div class="chart-grid">
-
-            <div class="chart-card">
-                <h3>Car Distribution by Brand</h3>
-                <div id="chart1"></div>
-            </div>
-
-            <div class="chart-card">
-                <h3>Average Price by Brand</h3>
-                <div id="chart2"></div>
-            </div>
-
-            <div class="chart-card full-width">
-                <h3>Model Year vs Price</h3>
-                <div id="chart3"></div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- SECTION 2 -->
-    <section class="dashboard-section">
-
-        <h2>Price Analysis</h2>
-
-        <div class="chart-grid">
-
-            <div class="chart-card">
-                <h3>Mileage vs Price</h3>
-                <div id="chart4"></div>
-            </div>
-
-            <div class="chart-card">
-                <h3>Horsepower vs Price</h3>
-                <div id="chart5"></div>
-            </div>
-
-            <div class="chart-card full-width">
-                <h3>Fuel Type in High Price Segment</h3>
-                <div id="chart6"></div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- SECTION 3 -->
-    <section class="dashboard-section">
-
-        <h2>Advanced Insights</h2>
-
-        <div class="chart-grid">
-
-            <div class="chart-card">
-                <h3>Transmission vs Price</h3>
-                <div id="chart7"></div>
-            </div>
-
-            <div class="chart-card">
-                <h3>Year vs Mileage</h3>
-                <div id="chart8"></div>
-            </div>
-
-            <div class="chart-card full-width">
-                <h3>Correlation Heatmap</h3>
-                <div id="chart9"></div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- INSIGHT -->
-    <section class="insight-section">
-
-        <h2>Key Findings</h2>
-
-        <ul>
-            <li>Insight 1...</li>
-            <li>Insight 2...</li>
-            <li>Insight 3...</li>
-        </ul>
-
-    </section>
-    <!-- D3 bundle -->
-    <script src="js/d3.v6.min.js"></script>
-
-    <!-- Our JS code -->
-    <script src="js/main.js"></script>
+  <script src="js/viz1.js"></script>
 </body>
-
 </html>

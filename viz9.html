@@ -10,93 +10,95 @@
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/viz9.css">
 </head>
-
 <body>
+  <div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="badge">UAS Visualisasi Data</div>
+        <h2>Car Price Dashboard</h2>
+        <p class="subtitle">Analisis Interaktif Harga Mobil Bekas</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item">
+          <span class="icon">🚗</span> 01. Distribusi Brand
+        </a>
+        <a href="viz2_average_price.html" class="nav-item">
+          <span class="icon">💰</span> 02. Rata-rata Harga
+        </a>
+        <a href="viz3_scatter_plot.html" class="nav-item">
+          <span class="icon">📅</span> 03. Tahun vs Harga
+        </a>
+        <a href="vis4_mileage_price.html" class="nav-item">
+          <span class="icon">🛣️</span> 04. Jarak vs Harga
+        </a>
+        <a href="vis5_horsepower_price.html" class="nav-item">
+          <span class="icon">⚡</span> 05. Tenaga vs Harga
+        </a>
+        <a href="vis6_fueltype_highprice.html" class="nav-item">
+          <span class="icon">⛽</span> 06. Bahan Bakar Termahal
+        </a>
+        <a href="viz7.html" class="nav-item">
+          <span class="icon">⚙️</span> 07. Transmisi vs Harga
+        </a>
+        <a href="viz8.html" class="nav-item">
+          <span class="icon">📈</span> 08. Tahun vs Jarak Tempuh
+        </a>
+        <a href="viz9.html" class="nav-item active">
+          <span class="icon">🔥</span> 09. Matriks Korelasi
+        </a>
+      </nav>
+    </aside>
 
-<div class="header">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="header">
+        <div class="badge">Visualisasi 9 · Heatmap</div>
+        <h1>
+          Korelasi Antar Variabel<br>
+          Terhadap Harga Mobil
+        </h1>
+        <p class="subtitle">
+          Menampilkan hubungan antara Year, Mileage, Horsepower dan Price menggunakan matriks korelasi Pearson (setelah pembersihan outlier).
+        </p>
+      </div>
 
-  <div class="badge">
-    Visualisasi 9 · Heatmap
+      <div class="chart-wrap">
+        <svg id="chart"></svg>
+        <div class="legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#f04f6e"></span>
+            <span>Korelasi Negatif (s.d -1.0)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#252a38"></span>
+            <span>Netral / Tidak Ada (0.0)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#55c98a"></span>
+            <span>Korelasi Positif (s.d +1.0)</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="note">
+        <strong>Temuan Analisis:</strong> Matriks korelasi membuktikan harga jual bekas sangat dipengaruhi secara dominan oleh Horsepower (+0.64, korelasi positif kuat) dan Mileage (-0.59, korelasi negatif kuat). Tahun produksi (+0.01) hampir tidak memiliki korelasi linier langsung dengan harga.<br><br>
+        <strong>Sumber:</strong> Car Price Prediction Dataset (Kaggle) · D3.js v7
+      </p>
+    </div>
   </div>
 
-  <h1>
-    Korelasi Antar Variabel<br>
-    Terhadap Harga Mobil
-  </h1>
-
-  <p class="subtitle">
-    Menampilkan hubungan antara Year, Mileage,
-    Horsepower dan Price menggunakan matriks korelasi.
-  </p>
-
-</div>
-
-<div class="chart-wrap">
-
-  <svg id="chart"></svg>
-
-  <div class="legend">
-
-    <div class="legend-item">
-      <span class="legend-dot" style="background:#f04f6e"></span>
-      <span>Negatif</span>
+  <div class="tooltip" id="tooltip">
+    <div class="tt-brand" id="tt-title"></div>
+    <div class="tt-row">
+      <span>Korelasi</span>
+      <span id="tt-value"></span>
     </div>
-
-    <div class="legend-item">
-      <span class="legend-dot" style="background:#252a38"></span>
-      <span>Netral</span>
-    </div>
-
-    <div class="legend-item">
-      <span class="legend-dot" style="background:#55c98a"></span>
-      <span>Positif</span>
-    </div>
-
   </div>
 
-</div>
-
-<div class="tooltip" id="tooltip">
-
-  <div class="tt-brand" id="tt-title"></div>
-
-  <div class="tt-row">
-    <span>Korelasi</span>
-    <span id="tt-value"></span>
-  </div>
-
-</div>
-
-<div class="nav-buttons">
-        <a href="viz1_brand_count.html" class="btn">Visualisasi 1: Jumlah Kendaraan</a>
-        <a href="viz2_average_price.html" class="btn">Visualisasi 2: Rata-rata Harga</a>
-        <a href="viz3_scatter_plot.html" class="btn">Visualisasi 3: Sebaran Korelasi</a>
-        <a href="vis4_mileage_price.html" class="btn">Visualisasi 4: Sebaran Korelasi</a>
-        <a href="vis5_horsepower_price.html" class="btn">Visualisasi 5: Horsepower vs Harga</a>
-        <a href="vis6_fueltype_highprice.html" class="btn">Visualisasi 6: Fuel Type Harga Tinggi</a>
-        <a href="viz7.html" class="btn">Visualisasi 7: Distribusi Harga</a>
-        <a href="viz8.html" class="btn">Visualisasi 8: Tahun vs Mileage</a>
-        <a href="viz9.html" class="btn active">Visualisasi 9: Heatmap Korelasi</a>
-</div>
-
-<p class="note">
-    <strong>Temuan Analisis:</strong> Heatmap korelasi menunjukkan tingkat hubungan antar variabel numerik yang terdapat
-    pada dataset kendaraan bekas. Variabel Horsepower dan Model_Year memperlihatkan korelasi positif terhadap harga
-    kendaraan, yang mengindikasikan bahwa mobil dengan tenaga mesin lebih besar dan tahun produksi yang lebih baru
-    cenderung memiliki harga jual yang lebih tinggi. Sebaliknya, Mileage menunjukkan korelasi negatif terhadap harga,
-    sehingga kendaraan dengan jarak tempuh yang tinggi umumnya mengalami penurunan nilai jual. Temuan ini menunjukkan
-    bahwa spesifikasi teknis dan tingkat penggunaan kendaraan merupakan faktor yang lebih berpengaruh terhadap harga
-    dibandingkan usia kendaraan semata.<br><br>
-    <strong>Petunjuk Interaksi:</strong> Arahkan kursor ke setiap sel heatmap untuk melihat nilai korelasi antar variabel
-    secara lebih rinci. Warna yang semakin mendekati hijau menunjukkan hubungan positif yang lebih kuat, sedangkan warna
-    yang mendekati merah menunjukkan hubungan negatif yang lebih kuat.<br><br>
-    <strong>Sumber data:</strong> Car Price Prediction Dataset · Diolah dengan Python/pandas · Divisualisasikan dengan
-    D3.js 
-</p>
-
-<script src="js/viz9.js"></script>
-
+  <script src="js/viz9.js"></script>
 </body>
 </html>

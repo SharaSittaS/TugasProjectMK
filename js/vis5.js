@@ -197,12 +197,15 @@ function initScatterPlot(data) {
 d3.csv("data/car_clean.csv").then(data => {
 
     data.forEach(d => {
+        d.Car_ID = +d.Car_ID;
         d.Price = +d.Price;
         d.Mileage = +d.Mileage;
         d.Horsepower = +d.Horsepower;
         d.Model_Year = +d.Model_Year;
     });
 
-    initScatterPlot(data);
+    const cleanData = data.filter(d => d.Car_ID !== 49 && d.Car_ID !== 1963);
+
+    initScatterPlot(cleanData);
 
 });
