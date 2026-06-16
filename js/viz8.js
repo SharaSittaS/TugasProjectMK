@@ -77,6 +77,34 @@ d3.csv("data/car_clean.csv")
     .attr("class","axis")
     .call(d3.axisLeft(y).tickFormat(d => (d / 1000) + "k km"));
 
+  // ───── LINEAR REGRESSION (TREND LINE) ─────
+  const nReg = cleanData.length;
+  const sumX = d3.sum(cleanData, d => d.Model_Year);
+  const sumY = d3.sum(cleanData, d => d.Mileage);
+  const sumXY = d3.sum(cleanData, d => d.Model_Year * d.Mileage);
+  const sumX2 = d3.sum(cleanData, d => d.Model_Year * d.Model_Year);
+
+  const slope = (nReg * sumXY - sumX * sumY) / (nReg * sumX2 - sumX * sumX);
+  const intercept = (sumY - slope * sumX) / nReg;
+
+  const x1 = d3.min(cleanData, d => d.Model_Year);
+  const y1Reg = slope * x1 + intercept;
+  const x2 = d3.max(cleanData, d => d.Model_Year);
+  const y2Reg = slope * x2 + intercept;
+
+  g.append("line")
+    .attr("class", "trend-line")
+    .attr("x1", x(x1))
+    .attr("y1", y(y1Reg))
+    .attr("x2", x(x2))
+    .attr("y2", y(y2Reg))
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 2.5)
+    .attr("stroke-dasharray", "5,5")
+    .attr("opacity", 0.8)
+    .style("pointer-events", "none");
+
+  // ───── DOTS ─────
   const dots = g.selectAll(".dot")
     .data(cleanData)
     .join("circle")
