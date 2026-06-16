@@ -17,11 +17,8 @@ const innerW = W - margin.left - margin.right;
 const innerH = H - margin.top - margin.bottom;
 
 const svg = d3.select("#chart")
-  .attr("width",W)
-  .attr("height",H)
   .attr("viewBox",`0 0 ${W} ${H}`)
-  .style("width","100%")
-  .style("height","auto");
+  .attr("preserveAspectRatio","xMidYMid meet");
 
 const g = svg.append("g")
   .attr(

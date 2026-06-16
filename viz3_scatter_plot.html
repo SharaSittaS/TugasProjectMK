@@ -6,8 +6,8 @@
   <title>Visualisasi 3 — Korelasi Tahun Produksi terhadap Harga Jual</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/viz3.css" />
+  <link rel="stylesheet" href="css/sidebar.css?v=9" />
+  <link rel="stylesheet" href="css/viz3.css?v=9" />
 </head>
 <body>
   <div class="dashboard-container">
@@ -55,9 +55,6 @@
         <div class="badge">Visualisasi 3 &nbsp;·&nbsp; Scatter Plot</div>
         <h1>Korelasi Tahun Produksi<br>terhadap Harga Jual</h1>
         <p class="subtitle">Eksplorasi hubungan sebaran tahun pembuatan (Model Year) dan nilai transaksi (Price) (setelah pembersihan outlier).</p>
-      </div>
-
-      <div class="chart-wrap">
         <div class="filter-box">
           <label>Filter Brand:</label>
           <select id="brandFilter">
@@ -70,6 +67,9 @@
             <option value="Toyota">Toyota</option>
           </select>
         </div>
+      </div>
+
+      <div class="chart-wrap">
         <svg id="chart">
           <text id="chart-loader" x="50%" y="50%" text-anchor="middle" fill="var(--muted)">Memuat data kendaraan bekas...</text>
         </svg>

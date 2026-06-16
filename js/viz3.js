@@ -17,7 +17,7 @@ const margin = {
 };
 
 const W = 1200;
-const H = 650;
+const H = 800;
 
 const innerW =
   W - margin.left - margin.right;
@@ -27,11 +27,8 @@ const innerH =
 
 // ───────────────── SVG ─────────────────
 const svg = d3.select("#chart")
-  .attr("width", W)
-  .attr("height", H)
   .attr("viewBox", `0 0 ${W} ${H}`)
-  .style("width", "100%")
-  .style("height", "auto");
+  .attr("preserveAspectRatio", "xMidYMid meet");
 
 const g = svg.append("g")
   .attr(
@@ -253,7 +250,7 @@ function initScatterPlot(data) {
 
   dots.transition()
     .duration(700)
-    .attr("r", 2.2);
+    .attr("r", 4.5);
 
   // ───── HOVER ─────
   dots
@@ -261,7 +258,7 @@ function initScatterPlot(data) {
 
       d3.select(this)
         .raise()
-        .attr("r", 7)
+        .attr("r", 9)
         .attr("opacity", 1)
         .attr(
           "stroke",
@@ -311,7 +308,7 @@ function initScatterPlot(data) {
     .on("mouseleave", function () {
 
       d3.select(this)
-        .attr("r", 2.2)
+        .attr("r", 4.5)
         .attr("opacity", 0.35)
         .attr(
           "stroke-width",

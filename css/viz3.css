@@ -210,17 +210,18 @@ svg { display: block; overflow: visible; }
 }
 
 .filter-box{
-  width:95%;
-  max-width:1200px;
-  margin:15px auto;
+  margin-top:8px;
   display:flex;
   align-items:center;
   gap:10px;
 }
 
 .filter-box select{
-  padding:8px 12px;
+  padding:6px 10px;
   border-radius:8px;
-  border:1px solid #ccc;
+  border:1px solid var(--border, #252a38);
+  background:var(--surface, #181c27);
+  color:var(--text, #e8eaf0);
   cursor:pointer;
+  font-size:13px;
 }

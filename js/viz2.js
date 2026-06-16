@@ -9,17 +9,14 @@ const COLOR_HEX = {
 };
 
 // ── DIMENSIONS ───────────────────────────────────────────────────────────
-const margin = { top: 20, right: 90, bottom: 52, left: 76 };
+const margin = { top: 20, right: 90, bottom: 52, left: 66 };
 const W = 708, H = 360;
 const innerW = W - margin.left - margin.right;
 const innerH = H - margin.top  - margin.bottom;
 
 const svg = d3.select("#chart")
-  .attr("width",  W)
-  .attr("height", H)
   .attr("viewBox", `0 0 ${W} ${H}`)
-  .style("width",  "100%")
-  .style("height", "auto");
+  .attr("preserveAspectRatio", "xMidYMid meet");
 
 const g = svg.append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -69,7 +66,7 @@ d3.csv("data/car_clean.csv").then(data => {
     .call(d3.axisLeft(yScale).tickSize(0))
     .call(ax => ax.select(".domain").attr("stroke", "var(--border)"))
     .call(ax => ax.selectAll(".tick text")
-      .attr("dx", "-10px")
+      .attr("dx", "-4px")
       .style("font-size", "13px")
       .style("fill", "var(--text)")
       .style("font-weight", "500")
